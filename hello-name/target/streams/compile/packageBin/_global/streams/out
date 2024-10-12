@@ -1,0 +1,13 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /home/algoha/intro-scala/hello-name/target/scala-3.5.1/helloname_3-0.1.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Hello$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-name/target/scala-3.5.1/classes/Hello$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	helloName.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-name/target/scala-3.5.1/classes/helloName.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	helloName.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-name/target/scala-3.5.1/classes/helloName.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Hello$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-name/target/scala-3.5.1/classes/Hello$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Hello$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-name/target/scala-3.5.1/classes/Hello$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
