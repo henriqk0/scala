@@ -1,0 +1,14 @@
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /home/algoha/intro-scala/functions-exemples/target/scala-3.5.1/classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /home/algoha/intro-scala/functions-exemples/target/scala-3.5.1/classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Funcs.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Funcs$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Funcs$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Funcs.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Funcs$package$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Funcs$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: /home/algoha/intro-scala/functions-exemples/target/scala-3.5.1/classes.bak[0m
