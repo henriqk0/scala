@@ -1,1 +1,13 @@
-[0m[[0m[0mdebug[0m] [0m[0mJar uptodate: /home/algoha/intro-scala/hello-world-sbt/target/scala-3.5.1/helloworld_3-0.1.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /home/algoha/intro-scala/hello-world-sbt/target/scala-3.5.1/helloworld_3-0.1.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Hello$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-world-sbt/target/scala-3.5.1/classes/Hello$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	hello.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-world-sbt/target/scala-3.5.1/classes/hello.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	hello.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-world-sbt/target/scala-3.5.1/classes/hello.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Hello$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-world-sbt/target/scala-3.5.1/classes/Hello$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Hello$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/algoha/intro-scala/hello-world-sbt/target/scala-3.5.1/classes/Hello$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m

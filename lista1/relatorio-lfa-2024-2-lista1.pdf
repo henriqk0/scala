@@ -1,0 +1,85 @@
+Lista 1 — Introdução à Teoria da Computação;
+Fundamentos Matemáticos; Computação e
+Representação
+Teoria da Computação / Linguagens Formais e Autômatos
+Henrique de Souza Lima
+IFES — Campus Serra
+2024/2
+
+1 Introdução
+O relatório a seguir expõe as resoluções dos problemas, assim como de seus
+enunciados, apresentados na primeira lista de exercícios da disciplina de
+Linguagem Formal e Autômatos, ofertada como optativa do curso de graduação
+em Sistemas de Informação do IFES - Campus Serra. Nesse sentido, produziu-se 
+códigos fontes na linguagem de programação Scala, em sua versão 3.5.1, procurando
+utilizar o paradigma funcional na resolução de cada exercício. Os códigos foram
+executados através do SBT (Simple Build Tool), que se faz presente nos diretórios 
+criados para cada problema mediante um arquivo build.sbt; diretórios estes que 
+também possuem um arquivo READM.ME contendo breves informações a respeito do problema
+e da implementação do código utilizado para resolvê-lo.  
+
+2 Problemas
+
+Problema 1 — Conversão de Bases Numéricas (3 pts)
+Escreva um programa que converte um número inteiro de uma base numérica para outra. O
+programa deve receber como entrada o número a ser convertido, a base original e a base para a
+qual ele deve ser convertido. As bases suportadas devem ser 2 (binária), 8 (octal), 10 (decimal),
+12 (duodecimal), 16 (hexadecimal), e 20 (vigesimal).1 (rodapé: 1Para base numéricas maiores do que 10, use as letras maiúsculas no alfabeto latino como os dígitos adicionais.
+Por exemplo, os dígitoda da base 16 serão {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F}.)
+
+Solução 1
+
+
+
+Problema 2 — Contador de Parênteses Bem Formados (3 pts)
+Desenvolva um programa que verifica se uma expressão composta apenas de parênteses (‘(’ e
+‘)’) está corretamente balanceada, ou seja, se cada parêntese de abertura tem um correspondente
+parêntese de fechamento. O programa receberá como entrada uma string contendo apenas
+parênteses, e como saída uma mensagem que indica se a expressão está bem formada.
+
+Solução 2
+
+
+
+Problema 3 — Números Perfeitos (3 pts)
+Escreva um programa que verifique se um número é perfeito. Um número perfeito é aquele
+que é igual à soma de seus divisores próprios, i.e., os divisores excluindo o um o próprio número.
+O programa receberá como entrada um número inteiro positivo, e como saída uma mensagem
+que indica se o número é perfeito ou não
+
+Solução 3
+
+
+
+Problema 4 — Cálculo de Expressões com Álgebra Relacional (6 pts)
+Crie um programa que calcula o valor de uma expressão da álgebra de conjuntos. O programa
+deve permitir ao usuário inserir conjuntos (apenas conjuntos definidos por extensão, i.e., listando
+todos os elementos) e, em seguida, o programa deve receber como entrada uma string que
+representa a expressão e retornar o resultado. A expressão em questão poderá usar:
+• União (A | B);
+• Interseção (A & B);
+• Diferença (A - B);
+• Diferença simétrica (A ^ B);
+• Complemento (~A);2
+• Produto cartesiano (A * B);
+• Conjunto das partes (P(A));
+Exemplos simples:
+• A | (B & C): União do conjunto A com a interseção dos conjuntos B e C.
+• (A - B) ^ C: Diferença simétrica entre a diferença de A e B e o conjunto C.
+• ~(A | B): Complemento da união dos conjuntos A e B.
+• P(A) - P(B): Diferença entre o conjunto das partes de A e o conjunto das partes de B.
+• A * (B | C): Produto cartesiano de A com a união de B e C.
+Exemplos mais complexos:
+• ~((A & B) | (C - D)): Complemento da união entre a interseção de A e B e a diferença
+de C e D.
+• P(A & B) ^ P(A | B): Diferença simétrica entre o conjunto das partes da interseção de
+A e B e o conjunto das partes da união de A e B.
+• (A * B) & (A * C): Interseção do produto cartesiano de A e B com o produto cartesiano
+de A e C.
+• ~(~A & ~B): Complemento da interseção dos complementos de A e B (equivalente a A | B
+pela Lei de De Morgan).
+
+Solução 4
+
+
+
