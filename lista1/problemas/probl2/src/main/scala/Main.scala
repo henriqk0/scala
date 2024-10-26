@@ -8,9 +8,9 @@ def well_formed_parenthesis(s: String, rest:Int = 0, i: Int = 0): String = {
       "A expressão de parêntesis está bem formada."
     } else {
         if (rest > 0)
-          s"A expressão de parêntesis não está bem formada ($rest parentesis abertos a mais)."
+          s"A expressão de parêntesis não está bem formada: $rest parêntesis abertos a mais."
         else
-          s"A expressão de parêntesis não está bem formada (ha parentese(is) fechado(s) não-relacionado(s) com aberto(s))."
+          s"A expressão de parêntesis não está bem formada: há parêntese fechado não-relacionado com aberto."
       }
   }
   else {
