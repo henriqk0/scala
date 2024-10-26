@@ -1,15 +1,16 @@
 import scala.annotation.tailrec
 
+
 @tailrec
 def well_formed_parenthesis(s: String, rest:Int = 0, i: Int = 0): String = {
-  if (s.length == i) {
+  if (( s.length == i) || (rest < 0))  {
     if (rest == 0) {
       "A expressão de parêntesis está bem formada."
     } else {
         if (rest > 0)
           s"A expressão de parêntesis não está bem formada ($rest parentesis abertos a mais)."
         else
-          s"A expressão de parêntesis não está bem formada (${math.abs(rest)} parentesis fechados a mais)."
+          s"A expressão de parêntesis não está bem formada (ha parentese(is) fechado(s) não-relacionado(s) com aberto(s))."
       }
   }
   else {
@@ -22,7 +23,6 @@ def well_formed_parenthesis(s: String, rest:Int = 0, i: Int = 0): String = {
         well_formed_parenthesis(s, rest, i+1)
   }  
 }
-
 
 
 @main def Main() = {

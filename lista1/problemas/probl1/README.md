@@ -4,7 +4,7 @@
 
 **Autor:** Henrique de Souza Lima
 
-## Problema 0
+## Problema 1
 
 Este problema pede a construção de uma função que receba como entrada um número
 $n$ representando o tamanho de uma cadeia de bits e retorne uma sequência com
