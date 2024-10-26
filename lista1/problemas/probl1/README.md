@@ -6,9 +6,13 @@
 
 ## Problema 1
 
-Este problema pede a construção de uma função que receba como entrada um número
-$n$ representando o tamanho de uma cadeia de bits e retorne uma sequência com
-todas as cadeias em binário com o tanho indicado.
+Este problema pede a construção de um programa que converte um número inteiro de 
+uma base numérica para outra. O programa deve receber como entrada o número a ser 
+convertido, a base original e a base para a qual ele deve ser convertido. As 
+bases suportadas devem ser 2 (binária), 8 (octal), 10 (decimal), 12 (duodecimal),
+16 (hexadecimal), e 20 (vigesimal), usando as letras maiúsculas no alfabeto latino
+como os dígitos adicionais. Por exemplo, os dígitos da da base 16 
+serão {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F}.
 
 **Solução**
 
