@@ -6,32 +6,39 @@
 
 ## Problema 3
 
-Este problema pede a construção de uma função que receba como entrada um número
-$n$ representando o tamanho de uma cadeia de bits e retorne uma sequência com
-todas as cadeias em binário com o tanho indicado.
+Este problema pede a construção de uma função que verifica se um número é perfeito. 
+Um número perfeito é aquele que é igual à soma de seus divisores próprios, i.e., os
+divisores excluindo o próprio número. O programa receberá como entrada um número 
+inteiro positivo, e como saída uma mensagem que indica se o número é perfeito ou não.
 
 **Solução**
 
-A solução adotada foi implementar uma recursão. O caso base é quando o
-comprimento é zero. A única cadeia de tamanho zero é a cadeia vazia. As cadeias
-estão sendo representada como listas em Scala. Nos demais casos, gera-se todas
-as cadeias de tamanho $n-1$ e em seguida gera-se duas semi-duplicadas, uma com 0
-acrescentando à frente de cada cadeia, e outra com 1 acrescentado à frente de
-cada cadeia. O resultado é uma lista contendo as duas listas com as
-semi-duplicatas.
+A solução adotada foi implementar uma recursão. O caso base é quando o divisor atual, 
+inicialmente igual a 1, é igual ou maior que o número passado inicialmente para a função. 
+Caso seja, verifica se a soma dos divisores, positivos, do número desejado, exceto ele mesmo, é
+igual ao próprio número, e indica, em uma mensagem, se é ou não perfeito em conformidade
+com esta condição. O conjunto dos divisores, implementado como set, inicia-se 
+vazio. Nos demais casos, verifica-se se o resto da razão inteira entre do número e o
+divisor atual é igual ou não a zero, e ascrescentará este divisor ao set em caso afirmativo;
+em seguida, soma o valor do divisor atual por 1. O resultado é um set contendo todos
+os divisores desse número.
 
 **Execução**
 
 Para executar a função no prompt do Scala execute, por exemplo:
 
-
-```scala
-allBinStrings(5)
+```scala 
+is_perf_number(28)
 ```
 
 Para executar usando o SBT use:
 
-
 ```bash
 sbt run
+```
+
+Ou, para testes automatizados:
+
+```bash
+sbt test
 ```
