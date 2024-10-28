@@ -28,10 +28,12 @@ import scala.annotation.tailrec
 
 
 @main def Main() = {
-  println("Digite o primeiro conjunto:")
-  val num_orig = scala.io.StdIn.readLine()
+  println("Digite o conjunto A com valores separados por espaço:")
+  val first_input = scala.io.StdIn.readLine()
+  val a_set = Set[String] = first_input.split(" ").toSet
+
   println("Digite uma expressão")
-  val base_orig = scala.io.StdIn.readLine()
+  val expression = scala.io.StdIn.readLine()
   val conveted_base = convert_to_another_base(num_orig,base_orig, base_to_conv)
   println(s"$")
 }
