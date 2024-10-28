@@ -11,26 +11,29 @@ uma base numérica para outra. O programa deve receber como entrada o número a 
 convertido, a base original e a base para a qual ele deve ser convertido. As 
 bases suportadas devem ser 2 (binária), 8 (octal), 10 (decimal), 12 (duodecimal),
 16 (hexadecimal), e 20 (vigesimal), usando as letras maiúsculas no alfabeto latino
-como os dígitos adicionais. Por exemplo, os dígitos da da base 16 
-serão {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F}.
+como os dígitos adicionais. Por exemplo, os dígitos da base 16 serão 
+{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F}.
 
 **Solução**
 
-A solução adotada foi implementar uma recursão. O caso base é quando o
-comprimento é zero. A única cadeia de tamanho zero é a cadeia vazia. As cadeias
-estão sendo representada como listas em Scala. Nos demais casos, gera-se todas
-as cadeias de tamanho $n-1$ e em seguida gera-se duas semi-duplicadas, uma com 0
-acrescentando à frente de cada cadeia, e outra com 1 acrescentado à frente de
-cada cadeia. O resultado é uma lista contendo as duas listas com as
-semi-duplicatas.
+A solução adotada foi implementar 2 funções, sendo uma auxiliar com uso de recursão. 
+Primeiramente, converte-se a string recebida por um número inteiro, multiplicando
+cada dígito pelo seu valor correspondente, associado através de um Map(Char, Int),
+e da posição que ocupa, invertendo a string recebida para que os indices estejam corretamente
+relacionados com o expoente daquela base; por fim, soma-se todos os valores obtidos. Com o
+resultado, chama-se a função recursiva de cauda com o numero e sua base final, cujo caso base é
+quando o número em seu parametro é igual a 0. Nos demais casos, o número é dividido 
+sucessivamente pela base desejada e possui o caracter associado ao o resto desta divisão acrescentado 
+ao início de uma string, iniciada vazia. Ao fim, obtém-se a convertido para a base desejada.  
+
 
 **Execução**
 
 Para executar a função no prompt do Scala execute, por exemplo:
 
 
-```scala
-allBinStrings(5)
+```scala 
+convert_to_another_base("1111", 2, 16)
 ```
 
 Para executar usando o SBT use:
@@ -38,4 +41,10 @@ Para executar usando o SBT use:
 
 ```bash
 sbt run
+```
+
+Ou,
+
+```bash
+sbt test
 ```
