@@ -1,8 +1,38 @@
-## sbt project compiled with Scala 3
+# Lista 1 -- Teoria da Computação / Linguagens Formais e Autômatos -- 2024/2
 
-### Usage
+**Introdução à Teoria da Computação & Fundamentos Matemáticos**
 
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
+**Autor:** Henrique de Souza Lima
 
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+## Problema 1
+
+Este problema pede a construção de um programa que calcula o valor de uma expressão da álgebra de conjuntos. O programa
+deve permitir ao usuário inserir conjuntos (apenas conjuntos definidos por extensão, i.e., listando
+todos os elementos) e, em seguida, o programa deve receber como entrada uma string que
+representa a expressão e retornar o resultado.
+
+**Solução**
+
+A solução adotada foi 
+
+**Execução**
+
+Para executar a função no prompt do Scala execute, por exemplo:
+
+
+```scala 
+convert_to_another_base("1111", 2, 16)
+```
+
+Para executar usando o SBT use:
+
+
+```bash
+sbt run
+```
+
+Ou,
+
+```bash
+sbt test
+```
