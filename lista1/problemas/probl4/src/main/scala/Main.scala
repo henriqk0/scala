@@ -32,24 +32,24 @@ object SetAlgebra {
   sealed trait SetResult
   case class StringSet(result: Set[String]) extends SetResult
   case class PowerSet(result: Set[Set[String]]) extends SetResult
-  
-  def union(a: Set[String], b: Set[String]): Set[String] = a union b
-  def intersection(a: Set[String], b: Set[String]): Set[String] = a intersect b
-  def difference(a: Set[String], b: Set[String]): Set[String] = a diff b
-  def symmetric_difference(a: Set[String], b: Set[String]): Set[String] =
-    (a diff b) union (b diff a)
-  def complement(a: Set[String], all: Set[String]): Set[String] = all diff a
-  def cartesian_product(a: Set[String], b: Set[String]): Set[String] = {
-    for {
-      x <- a
-      y <- b
-    } yield s"($x, $y)" 
-  }
-  def to_power_set(a: Set[String]): Set[Set[String]] = {
-    (0 to a.size).flatMap(a.subsets).toSet
-  }
 
   def evaluate_expression(expr: String, sets: Map[String, Set[String]]): SetResult = {
+
+    def union(a: Set[String], b: Set[String]): Set[String] = a union b
+    def intersection(a: Set[String], b: Set[String]): Set[String] = a intersect b
+    def difference(a: Set[String], b: Set[String]): Set[String] = a diff b
+    def symmetric_difference(a: Set[String], b: Set[String]): Set[String] =
+      (a diff b) union (b diff a)
+    def complement(a: Set[String], all: Set[String]): Set[String] = all diff a
+    def cartesian_product(a: Set[String], b: Set[String]): Set[String] = {
+      for {
+        x <- a
+        y <- b
+      } yield s"($x, $y)" 
+    }
+    def to_power_set(a: Set[String]): Set[Set[String]] = {
+      (0 to a.size).flatMap(a.subsets).toSet
+    }
     val universal_set = sets.values.flatten.toSet
     val tokens = expr.replace("(", " ( ").replace(")", " ) ").split("\\s+").toList
     val output = scala.collection.mutable.Stack[SetResult]()
