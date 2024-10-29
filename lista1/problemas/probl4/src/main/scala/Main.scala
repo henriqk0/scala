@@ -29,33 +29,27 @@ import scala.util.Try
 
 object SetAlgebra {
   
-  // Define basic set operations
   def union(a: Set[String], b: Set[String]): Set[String] = a union b
   def intersection(a: Set[String], b: Set[String]): Set[String] = a intersect b
   def difference(a: Set[String], b: Set[String]): Set[String] = a diff b
   def symmetricDifference(a: Set[String], b: Set[String]): Set[String] =
     (a diff b) union (b diff a)
-
-  // Correctly compute complement based on the universal set
   def complement(a: Set[String], all: Set[String]): Set[String] = all diff a
-
   def cartesianProduct(a: Set[String], b: Set[String]): Set[String] =
     for {
       x <- a
       y <- b
     } yield s"($x, $y)" // Properly formatted string representation
-
-  // Return a power set as a set retornarof sets
   def powerSet(a: Set[String]): Set[Set[String]] = {
-    val ps = (0 to a.size).flatMap(a.subsets).toSet
-    println(s"Power set of $a: $ps") // Debug statement
-    ps
+    // val ps = (0 to a.size).flatMap(a.subsets).toSet
+    // println(s"Power set of $a: $ps") // Debug statement
+    // ps
+    (0 to a.size).flatMap(a.subsets).toSet
   }
 
-  // Function to evaluate the expression
   def evaluateExpression(expr: String, sets: Map[String, Set[String]]): Set[String] = {
-    val allElements = sets.values.flatten.toSet // Define the universal set here
-    println(s"Universal set: $allElements") // Debug statement
+    val universal_set = sets.values.flatten.toSet
+    println(s"Universal set: $universal_set") 
     val tokens = expr.replace("(", " ( ").replace(")", " ) ").split("\\s+").toList
     val output = scala.collection.mutable.Stack[Set[String]]()
     val operatorStack = scala.collection.mutable.Stack[String]()
@@ -79,21 +73,19 @@ object SetAlgebra {
           val a = output.pop()
           output.push(symmetricDifference(a, b))
         case "~" =>
-          // Complement should only apply to a single set
           val a = output.pop()
-          output.push(complement(a, allElements))
+          output.push(complement(a, universal_set))
         case "*" =>
           val b = output.pop()
           val a = output.pop()
-          output.push(cartesianProduct(a, b)) // Use string representation directly
+          output.push(cartesianProduct(a, b))
         case "P" =>
           val a = output.pop()
-          output.push(powerSet(a).flatten.toSet) // Correct handling of power set
-        case _ => // No action needed
+          output.push(powerSet(a).flatten.toSet)
+        case _ => 
       }
     }
 
-    // Parse the tokens
     tokens.foreach {
       case token if sets.contains(token) =>
         output.push(sets(token))
@@ -105,11 +97,19 @@ object SetAlgebra {
         while (operatorStack.nonEmpty) {
           applyOperator(operatorStack.pop())
         }
+      case unknownToken if unknownToken.startsWith("~") && sets.contains(unknownToken.tail) =>
+        output.push(complement(sets(unknownToken.tail), universal_set))
+      case unknownToken if unknownToken.startsWith("P") && unknownToken.length > 2 && unknownToken.endsWith(")") =>
+        val setName = unknownToken.substring(2, unknownToken.length - 1)
+        if (sets.contains(setName)) {
+          output.push(powerSet(sets(setName)).flatten.toSet)
+        } else {
+          println(s"Unknown set for power set: $setName")
+        }
       case unknownToken =>
         println(s"Unknown token: $unknownToken")
     }
 
-    // Process any remaining operators
     while (operatorStack.nonEmpty) {
       applyOperator(operatorStack.pop())
     }
