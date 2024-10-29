@@ -1,7 +1,7 @@
 // Crie um programa que calcula o valor de uma expressão da álgebra de conjuntos. O programa 
 // deve permitir ao usuário inserir conjuntos (apenas conjuntos definidos por extensão, i.e., listando 
 // todos os elementos) e, em seguida, o programa deve receber como entrada uma string que 
-// representa a expressão e retornar o resultado. A expressão em questão poderá usar:
+// representa a expressão e  o resultado. A expressão em questão poderá usar:
 // União (A | B);
 // • Interseção (A & B);
 // • Diferença (A - B); 
@@ -24,16 +24,119 @@
 // • ~(~A & ~B): Complemento da interseção dos complementos de A e B (equivalente a A | B pela Lei de De Morgan).
 
 
-import scala.annotation.tailrec
+import scala.io.StdIn
+import scala.util.Try
 
+object SetAlgebra {
+  
+  // Define basic set operations
+  def union(a: Set[String], b: Set[String]): Set[String] = a union b
+  def intersection(a: Set[String], b: Set[String]): Set[String] = a intersect b
+  def difference(a: Set[String], b: Set[String]): Set[String] = a diff b
+  def symmetricDifference(a: Set[String], b: Set[String]): Set[String] =
+    (a diff b) union (b diff a)
 
-@main def Main() = {
-  println("Digite o conjunto A com valores separados por espaço:")
-  val first_input = scala.io.StdIn.readLine()
-  val a_set = Set[String] = first_input.split(" ").toSet
+  // Correctly compute complement based on the universal set
+  def complement(a: Set[String], all: Set[String]): Set[String] = all diff a
 
-  println("Digite uma expressão")
-  val expression = scala.io.StdIn.readLine()
-  val conveted_base = convert_to_another_base(num_orig,base_orig, base_to_conv)
-  println(s"$")
+  def cartesianProduct(a: Set[String], b: Set[String]): Set[String] =
+    for {
+      x <- a
+      y <- b
+    } yield s"($x, $y)" // Properly formatted string representation
+
+  // Return a power set as a set retornarof sets
+  def powerSet(a: Set[String]): Set[Set[String]] = {
+    val ps = (0 to a.size).flatMap(a.subsets).toSet
+    println(s"Power set of $a: $ps") // Debug statement
+    ps
+  }
+
+  // Function to evaluate the expression
+  def evaluateExpression(expr: String, sets: Map[String, Set[String]]): Set[String] = {
+    val allElements = sets.values.flatten.toSet // Define the universal set here
+    println(s"Universal set: $allElements") // Debug statement
+    val tokens = expr.replace("(", " ( ").replace(")", " ) ").split("\\s+").toList
+    val output = scala.collection.mutable.Stack[Set[String]]()
+    val operatorStack = scala.collection.mutable.Stack[String]()
+
+    def applyOperator(operator: String): Unit = {
+      operator match {
+        case "|" =>
+          val b = output.pop()
+          val a = output.pop()
+          output.push(union(a, b))
+        case "&" =>
+          val b = output.pop()
+          val a = output.pop()
+          output.push(intersection(a, b))
+        case "-" =>
+          val b = output.pop()
+          val a = output.pop()
+          output.push(difference(a, b))
+        case "^" =>
+          val b = output.pop()
+          val a = output.pop()
+          output.push(symmetricDifference(a, b))
+        case "~" =>
+          // Complement should only apply to a single set
+          val a = output.pop()
+          output.push(complement(a, allElements))
+        case "*" =>
+          val b = output.pop()
+          val a = output.pop()
+          output.push(cartesianProduct(a, b)) // Use string representation directly
+        case "P" =>
+          val a = output.pop()
+          output.push(powerSet(a).flatten.toSet) // Correct handling of power set
+        case _ => // No action needed
+      }
+    }
+
+    // Parse the tokens
+    tokens.foreach {
+      case token if sets.contains(token) =>
+        output.push(sets(token))
+      case token if token.matches("[|&^\\-~*P]") =>
+        operatorStack.push(token)
+      case "(" =>
+        // Just push onto stack
+      case ")" =>
+        while (operatorStack.nonEmpty) {
+          applyOperator(operatorStack.pop())
+        }
+      case unknownToken =>
+        println(s"Unknown token: $unknownToken")
+    }
+
+    // Process any remaining operators
+    while (operatorStack.nonEmpty) {
+      applyOperator(operatorStack.pop())
+    }
+
+    output.pop()
+  }
+
+  // Main program execution
+  def main(args: Array[String]): Unit = {
+    println("Digite o número de conjuntos:")
+    val num_sets = scala.io.StdIn.readLine().toInt
+
+    // Read sets from the user
+    val sets: Map[String, Set[String]] = {
+      val setNames = List("A", "B", "C", "D").take(num_sets)
+      setNames.map { name =>
+        println(s"Digite o conjunto $name com valores separados por espaço:")
+        name -> scala.io.StdIn.readLine().split(" ").toSet
+      }.toMap
+    }
+
+    // Read the expression to evaluate
+    println("Digite a expressão de álgebra de conjuntos:")
+    val expression = scala.io.StdIn.readLine()
+
+    // Evaluate the expression and print the result
+    val result = Try(evaluateExpression(expression, sets)).getOrElse(Set())
+    println(s"Resultado: $result")
+  }
 }
