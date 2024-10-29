@@ -87,6 +87,6 @@ class MySuite extends AnyFlatSpec with Matchers {
       "C" -> Set("3", "4")
     )
     val result = Try(SetAlgebra.evaluateExpression("A | (B & C)", sets)).getOrElse(Set())
-    result should equal(Set("1", "2", "3", "4"))
+    result should equal(Set("1", "2", "3"))
   }
 }
