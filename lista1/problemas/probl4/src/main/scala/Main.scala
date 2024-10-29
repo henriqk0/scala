@@ -27,7 +27,11 @@
 import scala.io.StdIn
 import scala.util.Try
 
+
 object SetAlgebra {
+  sealed trait SetResult
+  case class StringSet(result: Set[String]) extends SetResult
+  case class PowerSet(result: Set[Set[String]]) extends SetResult
   
   def union(a: Set[String], b: Set[String]): Set[String] = a union b
   def intersection(a: Set[String], b: Set[String]): Set[String] = a intersect b
@@ -47,11 +51,11 @@ object SetAlgebra {
     (0 to a.size).flatMap(a.subsets).toSet
   }
 
-  def evaluateExpression(expr: String, sets: Map[String, Set[String]]): Set[String] = {
+  def evaluateExpression(expr: String, sets: Map[String, Set[String]]): SetResult = {
     val universal_set = sets.values.flatten.toSet
     println(s"Universal set: $universal_set") 
     val tokens = expr.replace("(", " ( ").replace(")", " ) ").split("\\s+").toList
-    val output = scala.collection.mutable.Stack[Set[String]]()
+    val output = scala.collection.mutable.Stack[SetResult]()
     val operatorStack = scala.collection.mutable.Stack[String]()
 
     def applyOperator(operator: String): Unit = {
@@ -59,36 +63,78 @@ object SetAlgebra {
         case "|" =>
           val b = output.pop()
           val a = output.pop()
-          output.push(union(a, b))
+          (a, b) match {
+            case (StringSet(aSet), StringSet(bSet)) =>
+              output.push(StringSet(union(aSet, bSet)))
+            case (PowerSet(aPowerSet), PowerSet(bPowerSet)) =>
+              output.push(PowerSet(aPowerSet ++ bPowerSet)) // Union of power sets
+            case _ =>
+              println(s"Unsupported operation for $operator between $a and $b")
+          }
         case "&" =>
           val b = output.pop()
           val a = output.pop()
-          output.push(intersection(a, b))
+          (a, b) match {
+            case (StringSet(aSet), StringSet(bSet)) =>
+              output.push(StringSet(intersection(aSet, bSet)))
+            case _ =>
+              println(s"Unsupported operation for $operator between $a and $b")
+          }
         case "-" =>
           val b = output.pop()
           val a = output.pop()
-          output.push(difference(a, b))
+          (a, b) match {
+            case (StringSet(aSet), StringSet(bSet)) =>
+              output.push(StringSet(difference(aSet, bSet)))
+            case (PowerSet(aPowerSet), PowerSet(bPowerSet)) =>
+              output.push(PowerSet(aPowerSet -- bPowerSet)) // Difference of power sets
+            case (PowerSet(aPowerSet), StringSet(bSet)) =>
+              output.push(PowerSet(aPowerSet.filterNot(subset => subset.intersect(bSet).nonEmpty))) // Remove subsets containing elements in bSet
+            case _ =>
+              println(s"Unsupported operation for $operator between $a and $b")
+          }
         case "^" =>
           val b = output.pop()
           val a = output.pop()
-          output.push(symmetricDifference(a, b))
+          (a, b) match {
+            case (StringSet(aSet), StringSet(bSet)) =>
+              output.push(StringSet(symmetricDifference(aSet, bSet)))
+            case _ =>
+              println(s"Unsupported operation for $operator between $a and $b")
+          }
         case "~" =>
           val a = output.pop()
-          output.push(complement(a, universal_set))
+          a match {
+            case StringSet(aSet) =>
+              output.push(StringSet(complement(aSet, universal_set)))
+            case _ =>
+              println(s"Unsupported operation for ~ on $a")
+          }
         case "*" =>
           val b = output.pop()
           val a = output.pop()
-          output.push(cartesianProduct(a, b))
+          (a, b) match {
+            case (StringSet(aSet), StringSet(bSet)) =>
+              output.push(StringSet(cartesianProduct(aSet, bSet)))
+            case _ =>
+              println(s"Unsupported operation for $operator between $a and $b")
+          }
         case "P" =>
           val a = output.pop()
-          output.push(powerSet(a).flatten.toSet)
+          a match {
+            case StringSet(aSet) =>
+              output.push(PowerSet(powerSet(aSet))) // Push the power set
+            case _ =>
+              println(s"Unsupported operation for $operator on $a")
+          }
         case _ => 
       }
     }
 
+
     tokens.foreach {
       case token if sets.contains(token) =>
-        output.push(sets(token))
+        output.push(StringSet(sets(token)))
       case token if token.matches("[|&^\\-~*P]") =>
         operatorStack.push(token)
       case "(" =>
@@ -98,11 +144,11 @@ object SetAlgebra {
           applyOperator(operatorStack.pop())
         }
       case unknownToken if unknownToken.startsWith("~") && sets.contains(unknownToken.tail) =>
-        output.push(complement(sets(unknownToken.tail), universal_set))
+        output.push(StringSet(complement(sets(unknownToken.tail), universal_set)))
       case unknownToken if unknownToken.startsWith("P") && unknownToken.length > 2 && unknownToken.endsWith(")") =>
         val setName = unknownToken.substring(2, unknownToken.length - 1)
         if (sets.contains(setName)) {
-          output.push(powerSet(sets(setName)).flatten.toSet)
+          output.push(PowerSet(powerSet(sets(setName))))
         } else {
           println(s"Unknown set for power set: $setName")
         }
@@ -114,8 +160,9 @@ object SetAlgebra {
       applyOperator(operatorStack.pop())
     }
 
-    output.pop()
+    output.pop() // This will return either StringSet or PowerSet
   }
+  
 
   // Main program execution
   def main(args: Array[String]): Unit = {

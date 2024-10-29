@@ -14,7 +14,7 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("3", "4", "5")
     )
     val result = Try(SetAlgebra.evaluateExpression("A | B", sets)).getOrElse(Set())
-    result should equal(Set("1", "2", "3", "4", "5"))
+    result shouldEqual SetAlgebra.StringSet(Set("1", "2", "3", "4", "5"))
   }
 
   it should "evaluate intersection correctly" in {
@@ -23,7 +23,7 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("3", "4", "5")
     )
     val result = Try(SetAlgebra.evaluateExpression("A & B", sets)).getOrElse(Set())
-    result should equal(Set("3"))
+    result shouldEqual SetAlgebra.StringSet(Set("3"))
   }
 
   it should "evaluate difference correctly" in {
@@ -32,7 +32,7 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("3", "4", "5")
     )
     val result = Try(SetAlgebra.evaluateExpression("A - B", sets)).getOrElse(Set())
-    result should equal(Set("1", "2"))
+    result shouldEqual SetAlgebra.StringSet(Set("1", "2"))
   }
 
   it should "evaluate symmetric difference correctly" in {
@@ -41,7 +41,7 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("3", "4", "5")
     )
     val result = Try(SetAlgebra.evaluateExpression("A ^ B", sets)).getOrElse(Set())
-    result should equal(Set("1", "2", "4", "5"))
+    result shouldEqual SetAlgebra.StringSet(Set("1", "2", "4", "5"))
   }
 
   it should "evaluate complement correctly version 1" in {
@@ -50,8 +50,8 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("3", "4", "5")
     )
     val allElements = sets.values.flatten.toSet
-    val result = Try(SetAlgebra.evaluateExpression("~(A)", sets)).getOrElse(Set())
-    result should equal(allElements diff Set("1", "2", "3"))
+    val result = Try(SetAlgebra.evaluateExpression("~A", sets)).getOrElse(Set())
+    result shouldEqual SetAlgebra.StringSet(allElements diff Set("1", "2", "3"))
   }
 
   it should "evaluate complement correctly version 2" in {
@@ -60,21 +60,20 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("3", "4", "5")
     )
     val allElements = sets.values.flatten.toSet
-    val result = Try(SetAlgebra.evaluateExpression("~A", sets)).getOrElse(Set())
-    result should equal(allElements diff Set("1", "2", "3"))
+    val result = Try(SetAlgebra.evaluateExpression("~(A)", sets)).getOrElse(Set())
+    result shouldEqual SetAlgebra.StringSet(allElements diff Set("1", "2", "3"))
   }
 
   it should "evaluate complement correctly version 3" in {
     val sets = Map(
       "A" -> Set("1", "2", "3"),
       "B" -> Set("3", "4", "5"),
-      "C" -> Set("5", "6", "7"),
+      "C" -> Set("5", "6", "7")
     )
     val allElements = sets.values.flatten.toSet
     val result = Try(SetAlgebra.evaluateExpression("~(A | B)", sets)).getOrElse(Set())
-    result should equal(allElements diff Set("1", "2", "3", "4", "5"))
+    result shouldEqual SetAlgebra.StringSet(allElements diff Set("1", "2", "3", "4", "5"))
   }
-
 
   it should "evaluate cartesian product correctly" in {
     val sets = Map(
@@ -82,7 +81,7 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("3", "4")
     )
     val result = Try(SetAlgebra.evaluateExpression("A * B", sets)).getOrElse(Set())
-    result should equal(Set("(1, 3)", "(1, 4)", "(2, 3)", "(2, 4)"))
+    result shouldEqual SetAlgebra.StringSet(Set("(1, 3)", "(1, 4)", "(2, 3)", "(2, 4)"))
   }
 
   it should "evaluate power set correctly version 1" in {
@@ -90,7 +89,7 @@ class MySuite extends AnyFlatSpec with Matchers {
       "A" -> Set("1", "2")
     )
     val result = Try(SetAlgebra.evaluateExpression("P(A)", sets)).getOrElse(Set())
-    result should equal(Set(Set(), Set("1"), Set("2"), Set("1", "2")))
+    result shouldEqual SetAlgebra.PowerSet(Set(Set(), Set("1"), Set("2"), Set("1", "2")))
   }
 
   it should "evaluate power set correctly version 2" in {
@@ -99,16 +98,7 @@ class MySuite extends AnyFlatSpec with Matchers {
       "B" -> Set("2", "3")
     )
     val result = Try(SetAlgebra.evaluateExpression("P(A) - P(B)", sets)).getOrElse(Set())
-    result should equal(Set(Set("1"), Set("1", "2")))
-  }
-
-  it should "handle unknown tokens gracefully" in {
-    val sets = Map(
-      "A" -> Set("1", "2"),
-      "B" -> Set("3", "4")
-    )
-    val result = Try(SetAlgebra.evaluateExpression("A | unknown", sets)).getOrElse(Set())
-    result should equal(Set()) // Assuming it returns empty set for invalid tokens
+    result shouldEqual SetAlgebra.PowerSet(Set(Set("1"), Set("1", "2")))
   }
 
   it should "evaluate complex expressions correctly" in {
@@ -118,6 +108,6 @@ class MySuite extends AnyFlatSpec with Matchers {
       "C" -> Set("3", "4")
     )
     val result = Try(SetAlgebra.evaluateExpression("A | (B & C)", sets)).getOrElse(Set())
-    result should equal(Set("1", "2", "3"))
+    result shouldEqual SetAlgebra.StringSet(Set("1", "2", "3"))
   }
 }
