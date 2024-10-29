@@ -36,29 +36,26 @@ object SetAlgebra {
   def union(a: Set[String], b: Set[String]): Set[String] = a union b
   def intersection(a: Set[String], b: Set[String]): Set[String] = a intersect b
   def difference(a: Set[String], b: Set[String]): Set[String] = a diff b
-  def symmetricDifference(a: Set[String], b: Set[String]): Set[String] =
+  def symmetric_difference(a: Set[String], b: Set[String]): Set[String] =
     (a diff b) union (b diff a)
   def complement(a: Set[String], all: Set[String]): Set[String] = all diff a
-  def cartesianProduct(a: Set[String], b: Set[String]): Set[String] =
+  def cartesian_product(a: Set[String], b: Set[String]): Set[String] = {
     for {
       x <- a
       y <- b
-    } yield s"($x, $y)" // Properly formatted string representation
-  def powerSet(a: Set[String]): Set[Set[String]] = {
-    // val ps = (0 to a.size).flatMap(a.subsets).toSet
-    // println(s"Power set of $a: $ps") // Debug statement
-    // ps
+    } yield s"($x, $y)" 
+  }
+  def to_power_set(a: Set[String]): Set[Set[String]] = {
     (0 to a.size).flatMap(a.subsets).toSet
   }
 
-  def evaluateExpression(expr: String, sets: Map[String, Set[String]]): SetResult = {
+  def evaluate_expression(expr: String, sets: Map[String, Set[String]]): SetResult = {
     val universal_set = sets.values.flatten.toSet
-    println(s"Universal set: $universal_set") 
     val tokens = expr.replace("(", " ( ").replace(")", " ) ").split("\\s+").toList
     val output = scala.collection.mutable.Stack[SetResult]()
     val operatorStack = scala.collection.mutable.Stack[String]()
 
-    def applyOperator(operator: String): Unit = {
+    def apply_operator(operator: String): Unit = {
       operator match {
         case "|" =>
           val b = output.pop()
@@ -98,7 +95,7 @@ object SetAlgebra {
           val a = output.pop()
           (a, b) match {
             case (StringSet(aSet), StringSet(bSet)) =>
-              output.push(StringSet(symmetricDifference(aSet, bSet)))
+              output.push(StringSet(symmetric_difference(aSet, bSet)))
             case _ =>
               println(s"Unsupported operation for $operator between $a and $b")
           }
@@ -115,7 +112,7 @@ object SetAlgebra {
           val a = output.pop()
           (a, b) match {
             case (StringSet(aSet), StringSet(bSet)) =>
-              output.push(StringSet(cartesianProduct(aSet, bSet)))
+              output.push(StringSet(cartesian_product(aSet, bSet)))
             case _ =>
               println(s"Unsupported operation for $operator between $a and $b")
           }
@@ -123,7 +120,7 @@ object SetAlgebra {
           val a = output.pop()
           a match {
             case StringSet(aSet) =>
-              output.push(PowerSet(powerSet(aSet))) // Push the power set
+              output.push(PowerSet(to_power_set(aSet))) // Push the power set
             case _ =>
               println(s"Unsupported operation for $operator on $a")
           }
@@ -138,17 +135,17 @@ object SetAlgebra {
       case token if token.matches("[|&^\\-~*P]") =>
         operatorStack.push(token)
       case "(" =>
-        // Just push onto stack
+        // push in stack
       case ")" =>
         while (operatorStack.nonEmpty) {
-          applyOperator(operatorStack.pop())
+          apply_operator(operatorStack.pop())
         }
       case unknownToken if unknownToken.startsWith("~") && sets.contains(unknownToken.tail) =>
         output.push(StringSet(complement(sets(unknownToken.tail), universal_set)))
       case unknownToken if unknownToken.startsWith("P") && unknownToken.length > 2 && unknownToken.endsWith(")") =>
         val setName = unknownToken.substring(2, unknownToken.length - 1)
         if (sets.contains(setName)) {
-          output.push(PowerSet(powerSet(sets(setName))))
+          output.push(PowerSet(to_power_set(sets(setName))))
         } else {
           println(s"Unknown set for power set: $setName")
         }
@@ -157,19 +154,16 @@ object SetAlgebra {
     }
 
     while (operatorStack.nonEmpty) {
-      applyOperator(operatorStack.pop())
+      apply_operator(operatorStack.pop())
     }
 
-    output.pop() // This will return either StringSet or PowerSet
+    output.pop()
   }
   
-
-  // Main program execution
   def main(args: Array[String]): Unit = {
     println("Digite o número de conjuntos:")
     val num_sets = scala.io.StdIn.readLine().toInt
 
-    // Read sets from the user
     val sets: Map[String, Set[String]] = {
       val setNames = List("A", "B", "C", "D").take(num_sets)
       setNames.map { name =>
@@ -178,12 +172,10 @@ object SetAlgebra {
       }.toMap
     }
 
-    // Read the expression to evaluate
     println("Digite a expressão de álgebra de conjuntos:")
     val expression = scala.io.StdIn.readLine()
 
-    // Evaluate the expression and print the result
-    val result = Try(evaluateExpression(expression, sets)).getOrElse(Set())
+    val result = Try(evaluate_expression(expression, sets)).getOrElse(Set())
     println(s"Resultado: $result")
   }
 }
